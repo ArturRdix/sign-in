@@ -2,7 +2,9 @@ let guestElems = document.querySelectorAll('.guest');
 let userElems = document.querySelectorAll('.user');
 const exit = document.getElementById('exit');
 const infoText = document.querySelectorAll('.user-info');
-checkJwt();
+checkJwt()
+    .then(user => authorizeUser(user))
+    .catch(user => noAuthorizeUser(user))
 
 exit.addEventListener('click', (e) => {
     localStorage.removeItem('jwt')
@@ -36,30 +38,33 @@ function checkJwt() {
         Jwt: jwt
     }
 
-    const dataJwt = JSON.stringify(JwtObj);
-    xhr.onreadystatechange = () => {
-        if (xhr.readyState === 4 && xhr.status === 200) {
-            const userObj = JSON.parse(xhr.response);
-            if (userObj == null) {
-                noAuthorizeUser(userObj)
-            }
-            else {
-                authorizeUser(userObj)
+    return new Promise((res, rej) => {
+        const dataJwt = JSON.stringify(JwtObj);
+        xhr.onreadystatechange = () => {
+            if (xhr.readyState === 4 && xhr.status === 200) {
+                const userObj = JSON.parse(xhr.response);
+                if (userObj == null) {
+                    rej(userObj);
+                }
+                else {
+                    res(userObj);
+                }
             }
         }
-    }
-    xhr.open('POST', '/api/auth/user')
-    xhr.send(dataJwt);
+        xhr.open('POST', '/api/auth/user')
+        xhr.send(dataJwt);
+    })
+
 }
 function authorizeUser(UserObj) {
-    infoText.forEach((elem)=>elem.innerText = `${UserObj.LastName} ${UserObj.FirstName}`);
+    infoText.forEach((elem) => elem.innerText = `${UserObj.LastName} ${UserObj.FirstName}`);
     userElems.forEach((elem) => elem.classList.remove('hidden'));
     guestElems.forEach((elem) => elem.classList.add('hidden'));
 }
 function noAuthorizeUser(userObj) {
     guestElems.forEach((elem) => elem.classList.remove('hidden'));
     userElems.forEach((elem) => elem.classList.add('hidden'));
-    if (location.pathname!=='/sign_in'&&location.pathname!=='/registration'){
+    if (location.pathname !== '/sign_in' && location.pathname !== '/registration') {
         window.location.href = '/sign_in';
     }
 }
