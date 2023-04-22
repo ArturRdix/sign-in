@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Registration</title>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+
+<body id="body">
+        <header class="header">
+            <div class="wrapper-header">
+                <div id="info">
+                    <div id="avatar">
+                    </div>
+                    <p class="user-info"></p>
+                </div>
+                <div id="navigation">
+                    <a href="/">
+                        <div class="block user">Главная</div>
+                    </a>
+                    <a href="/my_friends">
+                        <div class="block user">Мои Друзья</div>
+                    </a>
+                    <a href="/all_users_table">
+                        <div class="block user">Таблица</div>
+                    </a>
+                    <a href="/registration">
+                        <div class="block guest">Регистрация</div>
+                    </a>
+                    <div class="block guest active">Вход</div>
+                    <div id="exit" class="block user">Выход</div>
+                </div>
+            </div>
+        </header>
+    
+    <form autocomplete="off" id="sign-in">
+        <div class="sign-form">
+            <input class="sign-input" type="text" id="login" placeholder="Email">
+            <label id="label-email" for="mail-sign">Логин</label>
+        </div>
+        <div class="sign-form">
+            <input class="sign-input" type="password" id="password" placeholder="Password">
+            <label for="password-sign">Пароль</label>
+        </div>
+        <div id="check-block">
+            <input type="checkbox" name="check" id="check-box">
+            <label id="check-box-text" for="check">Показать пароль</label>
+        </div>
+        <button type="submit">Авторизация</button>
+        <p>У вас нет аккаунта? <a href="">Зарегестрироваться</a></p>
+    </form>
+    
+    <script src="scripts/script.js"></script>
+    <script>
+        
+        let checkPassword = document.getElementById('check-block');
+        let checkBox = document.getElementById('check-box');
+        let loginInput = document.getElementById('login');
+        let passwordInput = document.getElementById('password');
+        let signInForm = document.getElementById('sign-in')
+
+        checkPassword.addEventListener('click', ((e) => {
+            if (passwordInput.type === 'password') {
+                passwordInput.type = 'text';
+                checkBox.checked = true;
+            } else {
+                passwordInput.type = 'password';
+                checkBox.checked = false;
+            }
+        }))
+
+        document.querySelectorAll('input.sign-input').forEach(input =>
+            input.addEventListener('input', e => {
+                if (e.currentTarget.value.length > 0) {
+                    e.currentTarget.parentNode.classList.add('entered-field');
+                } else {
+                    e.currentTarget.parentNode.classList.remove('entered-field');
+                }
+            })
+        )
+
+        signInForm.addEventListener('submit', ((e) => {
+            e.preventDefault();
+            getJwt(loginInput.value, passwordInput.value);
+
+        }))
+    </script>
+
+</body>
+
+</html>

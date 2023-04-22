@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+
+<body>
+    <header class="header">
+        <div class="wrapper-header">
+            <div id="info">
+                <div id="avatar">
+                </div>
+                <p class="user-info"></p>
+            </div>
+
+            <div id="navigation">
+                <a href="/">
+                    <div class="block user">Главная</div>
+                </a>
+                <a href="/my_friends">
+                    <div class="block user">Мои Друзья</div>
+                </a>
+                <a href="/all_users_table">
+                    <div class="block user active">Таблица</div>
+                </a>
+                <a href="/registration">
+                    <div class="block guest">Регистрация</div>
+                </a>
+                <div class="block guest">Вход</div>
+                <div id="exit" class="block user">Выход</div>
+            </div>
+        </div>
+    </header>
+    <table>
+        <tr>
+            <th>id</th>
+            <th>Имя</th>
+            <th>Фамилия</th>
+            <th>Логин</th>
+        </tr>
+    </table>
+    <script src="scripts/script.js"></script>
+    <script>
+        if (localStorage.getItem('jwt') == null) {
+            window.location.href = '/sign_in';
+        }
+
+        getUsers()
+
+        
+        function getUsers() {
+            const xhr = new XMLHttpRequest();
+            xhr.open('GET', `/api/user/all`);
+            xhr.setRequestHeader('Authorization', `Bearer ${localStorage.getItem('jwt')}`)
+            xhr.onreadystatechange = function () {
+                if (this.readyState == 4 && this.status == 200) {
+                    const usersArr = JSON.parse(xhr.response);
+                    for (let i = 0; i < usersArr.length; i++) {
+                        let tr = document.createElement('tr');
+                        let td = document.createElement('td');
+                        document.querySelector('table').appendChild(tr);
+                        td = document.createElement('td');
+                        td.innerText = `${usersArr[i].Id}`
+                        tr.appendChild(td)
+                        td = document.createElement('td');
+                        td.innerText = `${usersArr[i].FirstName}`
+                        tr.appendChild(td)
+                        td = document.createElement('td');
+                        td.innerText = `${usersArr[i].LastName}`
+                        tr.appendChild(td)
+                        td = document.createElement('td');
+                        td.innerText = `${usersArr[i].Login}`
+                        tr.appendChild(td)
+                    }
+                }
+            }
+            xhr.send();
+        }
+    </script>
+</body>
+
+</html>

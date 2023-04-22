@@ -1,0 +1,271 @@
+﻿* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    text-decoration: none;
+}
+
+:root {
+    --white-color: #ffffff;
+    --main-color: #0098d4;
+    --main-hover-color: #06b8ff;
+    --red-color: red;
+    --flex: flex;
+}
+
+body {
+    font-family: Arial, Helvetica, sans-serif;
+    background-color: #15191f;
+}
+
+header {
+    background-color: var(--main-color);
+    width: 100%;
+    height: 60px;
+    display: var(--flex);
+    justify-content: center;
+}
+
+
+.wrapper-header {
+    width: 920px;
+    height: 100%;
+    display: var(--flex);
+    justify-content: space-between;
+    padding: 0 20px;
+    align-items: center;
+}
+
+#avatar {
+    width: 40px;
+    height: 40px;
+    background: var(--white-color);
+    border-radius: 50%;
+}
+
+#navigation {
+    display: var(--flex);
+
+}
+
+.block {
+    color: var(--white-color);
+    margin: 0 10px;
+    cursor: pointer;
+}
+
+.block:hover {
+    color: var(--white-color);
+    transition-duration: 500ms;
+}
+
+.active {
+    color: var(--white-color);
+    text-decoration: underline;
+}
+
+button {
+    display: block;
+    width: 100%;
+    padding: 10px;
+    background-color: var(--main-color);
+    color: var(--white-color);
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    margin-top: 25px;
+    font-size: 12pt;
+}
+
+button:hover {
+    background-color: var(--main-hover-color);
+}
+
+/*||||||||||||||||||||||||||||||||*/
+.error {
+    border-color: var(--red-color) !important;
+    animation: shake 0.3s;
+    color: var(--red-color) !important;
+}
+
+@keyframes shake {
+    0% {
+        transform: translateX(0);
+    }
+
+    25% {
+        transform: translateX(-5px);
+    }
+
+    50% {
+        transform: translateX(5px);
+    }
+
+    75% {
+        transform: translateX(-5px);
+    }
+
+    100% {
+        transform: translateX(0);
+    }
+}
+
+.error-message {
+    color: var(--red-color);
+    margin-bottom: 10px;
+}
+
+/*||||||||||||||||||||||||||||||||*/
+
+form {
+    width: 500px;
+    border: 2px solid var(--main-color);
+    border-radius: 10px;
+    margin: 100px auto;
+    padding: 48px 40px 36px;
+}
+
+::placeholder {
+    color: transparent;
+}
+
+label {
+    display: inline;
+    opacity: 0.5;
+    position: absolute;
+    color: var(--white-color);
+}
+
+.sign-input {
+    display: block;
+    width: 100%;
+    padding: 1rem 0.75rem;
+    font-size: 1rem;
+    font-weight: 400;
+    line-height: 1.5;
+    color: var(--white-color);
+    background-color: transparent;
+    background-clip: padding-box;
+    border: 2px solid;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+    border-radius: 0.375rem;
+    transition: border-color 0.15s ease-in-out;
+    padding-top: 15px;
+    outline: none;
+}
+
+.sign-form {
+    position: relative;
+    margin-bottom: 2rem;
+}
+
+.sign-form>label {
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    padding: 1rem 0.75rem;
+    overflow: hidden;
+    text-align: start;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    pointer-events: none;
+    transform-origin: 0 0;
+    transition: opacity 0.1s ease-in-out, transform 0.2s cubic-bezier(0.2, 0.17, 0, 1.13);
+}
+/*
+.sign-input:hover~label {
+    color: #ffffff72;
+    opacity: 1;
+    transform: scale(0.75) translateY(-0.5rem) translateX(1.45rem);
+}
+*/
+.sign-input:hover~label {
+    opacity: 0.2;
+}
+
+
+.sign-input:focus,
+.entered-field>input {
+    border-color: var(--main-color);
+}
+
+.sign-input:focus~label,
+.entered-field>label {
+    color: var(--main-color) !important;
+    opacity: 1 !important;
+    transform: scale(0.9) translateY(-0.8rem) translateX(1.75rem) !important;
+    background-color: #15191f;
+    width: auto;
+    height: auto;
+    font-weight: 500;
+    padding: 3px;
+}
+
+#check-block {
+    display: var(--flex);
+    align-items: center;
+}
+
+#check-box-text {
+    margin-left: 2rem;
+}
+
+td {
+    margin: 0;
+    width: 55px;
+    height: 15px;
+    border: 1px solid;
+}
+
+table,
+th,
+td {
+    border: 1px solid;
+    border-collapse: collapse;
+    background: var(--white-color);
+    margin: auto;
+    margin-top: 10%;
+    text-align: left;
+}
+
+.hidden {
+    display: none;
+}
+
+#info {
+    display: var(--flex);
+    align-items: center;
+    gap: 20px;
+}
+
+.user-info {
+    color: var(--white-color);
+
+}
+
+main {
+    margin: 60px 20%;
+}
+
+.user-info-block {
+    display: var(--flex);
+}
+
+.avatar-block {
+    display: var(--flex);
+    flex-grow: 1;
+    gap: 20px;
+}
+
+.bio {
+    flex-grow: 2;
+}
+
+.my-avatar {
+    width: 100px;
+    height: 100px;
+    background: white;
+}

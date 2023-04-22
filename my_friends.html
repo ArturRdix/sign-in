@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Arial';
+        }
+
+        #wrapper {
+            display: flex;
+            flex-direction: column;
+        }
+
+        #block-1 {
+            width: 100vw;
+            height: 80vh;
+            background: linear-gradient(to right,
+                    white 13%, yellow 13%, yellow 28%, cyan 28%, cyan 43%, green 43%, green 58%, #ff3eff 58%, #ff3eff 73%, red 73%, red 88%, blue 88%, blue);
+        }
+
+        #block-2 {
+            width: 100vw;
+            height: 5vh;
+            background: linear-gradient(to right,
+                    blue 13%, black 13%, black 28%, #ff3eff 28%, #ff3eff 43%, black 43%, black 58%, cyan 58%, cyan 73%, black 73%, black 88%, blue 88%, blue);
+        }
+
+        #block-3 {
+            width: 100vw;
+            height: 15vh;
+            background: linear-gradient(to right,
+                    #393939 15%, black 15%, black 30%, #565656 30%, #565656 45%, black 45%);
+        }
+
+        #main {
+            position: absolute;
+            display: flex;
+            width: 100vw;
+            height: 100vh;
+            align-items: center;
+            justify-content: center;
+        }
+
+        #text-signal {
+            background: black;
+            color: white;
+            width: 100vw;
+            text-align: center;
+            font-size: 80pt;
+            font-weight: 700;
+            padding: 15px 0;
+        }
+    </style>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+
+<body>
+    <header class="header">
+        <div class="wrapper-header">
+            <div id="info">
+                <div id="avatar">
+                </div>
+                <p class="user-info"></p>
+            </div>
+            <div id="navigation">
+                <a href="/index">
+                    <div class="block user">Главная</div>
+                </a>
+                <a href="/d">
+                    <div class="block active user">Мои Друзья</div>
+                </a>
+                <a href="/all_users_table">
+                    <div class="block user">Таблица</div>
+                </a>
+                <a href="">
+                    <div class="block guest">Регистрация</div>
+                </a>
+                <a href="/sign_in">
+                    <div class="block guest">Вход</div>
+                </a>
+                <div id="exit" class="block user">Выход</div>
+            </div>
+        </div>
+    </header>
+    <div id="main">
+        <p id="text-signal">NO SIGNAL</p>
+    </div>
+
+    <div id="wrapper">
+        <div id="block-1"></div>
+        <div id="block-2"></div>
+        <div id="block-3"></div>
+    </div>
+
+    <script src="scripts/script.js"></script>
+</body>
+
+</html>
