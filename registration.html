@@ -95,32 +95,40 @@
                 FirstName: name.value
             }
             const data = JSON.stringify(userObj);
-            const xhr = new XMLHttpRequest();
-
-            xhr.onreadystatechange = () => {
-
-                if (xhr.readyState == 4 && xhr.status == 200) {
-                    if (JSON.parse(xhr.response) === 'ok') {
-                        alert('Пользователь успешно создан')
-                        document.querySelectorAll('input').forEach(e => e.value = '');
-                        password.classList.remove('error');
-                        confPassword.classList.remove('error');
-                        passwordErrorMessage.style.display = 'none';
-                        getJwt(userObj.Login, userObj.Password)
+            new Promise((res, rej) => {
+                const xhr = new XMLHttpRequest();
+                xhr.onreadystatechange = () => {
+                    if (xhr.readyState == 4 && xhr.status == 200) {
+                        if (JSON.parse(xhr.response) === 'ok') {
+                            res()
+                        }
+                        else {
+                            rej(JSON.parse(xhr.response))
+                        }
                     }
-                    else if (JSON.parse(xhr.response) === "Password not equals") {
+                }
+
+                xhr.open('POST', '/api/user/reg')
+                xhr.send(data);
+            })
+                .then(() => {
+                    alert('Пользователь успешно создан');
+                    document.querySelectorAll('input').forEach(e => e.value = '');
+                    password.classList.remove('error');
+                    confPassword.classList.remove('error');
+                    passwordErrorMessage.style.display = 'none';
+                    getJwt(userObj.Login, userObj.Password)
+                })
+                .catch(error => {
+                    if (error === "Password not equals") {
                         password.classList.add('error');
                         confPassword.classList.add('error');
                         passwordErrorMessage.style.display = 'block';
                     }
                     else {
-                        alert(JSON.parse(xhr.response));
+                        alert(error);
                     }
-                }
-            }
-
-            xhr.open('POST', '/api/user/reg')
-            xhr.send(data);
+                })
 
         }))
         function getUser(id) {
