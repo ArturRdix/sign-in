@@ -51,7 +51,7 @@
         }
 
         getUsers()
-            .then(users => {
+            .then((users) => {
                 const table = document.querySelector('table');
                 users.forEach(user => {
                     const tr = document.createElement('tr');
@@ -75,27 +75,14 @@
                     table.appendChild(tr);
                 });
             })
-            .catch(error => {
-                console.log(`Error ${error}`);
-            });
 
         function getUsers() {
-            return new Promise((res, rej) => {
-	            const xhr = new XMLHttpRequest();
-	            xhr.open('GET', '/api/user/all');
-	            xhr.setRequestHeader('Authorization', `Bearer ${localStorage.getItem('jwt')}`);
-                xhr.onreadystatechange = function () {
-                    if (this.readyState === 4) {
-						const users = JSON.parse(xhr.response);
-                        if (this.status === 200) {
-                            res(users);
-                        } else {
-                            rej(users);
-                        }
-                    }
-                };
-                xhr.send();
-            });
+            return fetch('/api/user/all', {
+                headers: {
+                    'Authorization': `Bearer ${localStorage.getItem('jwt')}`
+                }
+            })
+                .then(data => data.json())
         }
     </script>
 </body>

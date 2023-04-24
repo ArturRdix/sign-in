@@ -55,31 +55,22 @@ function noAuthorizeUser() {
 }
 
 function getUser(id) {
-
-	return new Promise((res, rej) => {
-		const xhr = new XMLHttpRequest();
-		xhr.open('GET', `/api/user/one?id=${id}`);
-		xhr.setRequestHeader('Authorization', `Bearer ${localStorage.getItem('jwt')}`);
-		xhr.onreadystatechange = function () {
-			if (this.readyState === 4) {
-				const user = JSON.parse(xhr.response);
-				if (this.status === 200 && user != null) {
-					res(user);
-				} else {
-					rej(id);
-				}
-			}
-		};
-		xhr.send();
+	fetch(`/api/user/one?id=${id}`, {
+		headers: {
+			'Authorization': `Bearer ${localStorage.getItem('jwt')}`
+		}
 	})
-		.then((user) => {
-			console.log(`Id пользователя: ${user.Id}`)
-			console.log(`Имя пользователя: ${user.FirstName}`)
-			console.log(`Фамилия пользователя: ${user.LastName}`)
-			console.log(`Логин пользователя: ${user.Login}`)
+		.then(data => data.json())
+		.then(user => {
+			if (user != null) {
+				console.log(`Id пользователя: ${user.Id}`)
+				console.log(`Имя пользователя: ${user.FirstName}`)
+				console.log(`Фамилия пользователя: ${user.LastName}`)
+				console.log(`Логин пользователя: ${user.Login}`)
+			}
+			else {
+				console.log(`Пользователь с id:${id} - не найден`)
+			}
 		})
-		.catch((id) => {
-			console.log(`Пользователь с id:${id} - не найден`)
-		});
 }
 
