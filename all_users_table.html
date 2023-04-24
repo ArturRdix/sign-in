@@ -55,18 +55,23 @@
                 const table = document.querySelector('table');
                 users.forEach(user => {
                     const tr = document.createElement('tr');
+
                     const idTd = document.createElement('td');
                     idTd.innerText = user.Id;
                     tr.appendChild(idTd);
+
                     const firstNameTd = document.createElement('td');
                     firstNameTd.innerText = user.FirstName;
                     tr.appendChild(firstNameTd);
+
                     const lastNameTd = document.createElement('td');
                     lastNameTd.innerText = user.LastName;
                     tr.appendChild(lastNameTd);
+
                     const loginTd = document.createElement('td');
                     loginTd.innerText = user.Login;
                     tr.appendChild(loginTd);
+
                     table.appendChild(tr);
                 });
             })
@@ -75,19 +80,20 @@
             });
 
         function getUsers() {
-            const xhr = new XMLHttpRequest();
             return new Promise((res, rej) => {
+	            const xhr = new XMLHttpRequest();
+	            xhr.open('GET', '/api/user/all');
+	            xhr.setRequestHeader('Authorization', `Bearer ${localStorage.getItem('jwt')}`);
                 xhr.onreadystatechange = function () {
-                    if (this.readyState == 4) {
-                        if (this.status == 200) {
-                            res(JSON.parse(xhr.response));
+                    if (this.readyState === 4) {
+						let users = JSON.parse(xhr.response);
+                        if (this.status === 200) {
+                            res(users);
                         } else {
-                            rej(JSON.parse(xhr.response));
+                            rej(users);
                         }
                     }
                 };
-                xhr.open('GET', '/api/user/all');
-                xhr.setRequestHeader('Authorization', `Bearer ${localStorage.getItem('jwt')}`);
                 xhr.send();
             });
         }

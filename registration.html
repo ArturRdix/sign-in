@@ -10,134 +10,124 @@
 </head>
 
 <body id="body">
-    <header class="header">
-        <div class="wrapper-header">
-            <div id="info">
-                <div id="avatar">
-                </div>
-                <p class="user-info"></p>
+<header class="header">
+    <div class="wrapper-header">
+        <div id="info">
+            <div id="avatar">
             </div>
-            <div id="navigation">
-                <a href="/index">
-                    <div class="block user">Главная</div>
-                </a>
-                <a href="/my_friends">
-                    <div class="block user">Мои Друзья</div>
-                </a>
-                <a href="/all_users_table">
-                    <div class="block user">Таблица</div>
-                </a>
-                <a href="">
-                    <div class="block active guest">Регистрация</div>
-                </a>
-                <a href="/sign_in">
-                    <div class="block guest">Вход</div>
-                </a>
-                <div id="exit" class="block user">Выход</div>
-            </div>
+            <p class="user-info"></p>
         </div>
-    </header>
-    <form autocomplete="off" id="registration">
-
-
-        <div class="sign-form">
-            <input class="sign-input" type="text" id="name" placeholder="name">
-            <label for="name">Имя</label>
+        <div id="navigation">
+            <a href="/index">
+                <div class="block user">Главная</div>
+            </a>
+            <a href="/my_friends">
+                <div class="block user">Мои Друзья</div>
+            </a>
+            <a href="/all_users_table">
+                <div class="block user">Таблица</div>
+            </a>
+            <a href="">
+                <div class="block active guest">Регистрация</div>
+            </a>
+            <a href="/sign_in">
+                <div class="block guest">Вход</div>
+            </a>
+            <div id="exit" class="block user">Выход</div>
         </div>
-        <div class="sign-form">
-            <input class="sign-input" type="text" id="lastName" placeholder="lastName">
-            <label for="lastName">Фамилия</label>
-        </div>
-        <div class="sign-form">
-            <input class="sign-input" type="text" id="login" placeholder="login">
-            <label for="login">Логин</label>
-        </div>
-        <div class="sign-form">
-            <input class="sign-input" type="password" id="password" placeholder="password">
-            <label for="password">Пароль</label>
-        </div>
-        <div class="sign-form">
-            <input class="sign-input" type="password" id="confPassword" placeholder="confPassword">
-            <label for="confPassword">Подтвердите пароль</label>
-        </div>
+    </div>
+</header>
+<form autocomplete="off" id="registration">
 
-        <p class="error-message" id="password-error-message" style="display: none">Пароли не совпадают</p>
 
-        <button type="submit">Зарегистрироваться</button>
-    </form>
-    <script src="scripts/script.js"></script>
-    <script>
-        const name = document.getElementById('name');
-        const lastName = document.getElementById('lastName');
-        const login = document.getElementById('login');
-        const password = document.getElementById('password');
-        const confPassword = document.getElementById('confPassword');
-        const registrationForm = document.getElementById('registration');
-        const passwordErrorMessage = document.getElementById('password-error-message');
+    <div class="sign-form">
+        <input class="sign-input" type="text" id="name" placeholder="name">
+        <label for="name">Имя</label>
+    </div>
+    <div class="sign-form">
+        <input class="sign-input" type="text" id="lastName" placeholder="lastName">
+        <label for="lastName">Фамилия</label>
+    </div>
+    <div class="sign-form">
+        <input class="sign-input" type="text" id="login" placeholder="login">
+        <label for="login">Логин</label>
+    </div>
+    <div class="sign-form">
+        <input class="sign-input" type="password" id="password" placeholder="password">
+        <label for="password">Пароль</label>
+    </div>
+    <div class="sign-form">
+        <input class="sign-input" type="password" id="confPassword" placeholder="confPassword">
+        <label for="confPassword">Подтвердите пароль</label>
+    </div>
 
-        document.querySelectorAll('input.sign-input').forEach(input =>
-            input.addEventListener('input', e => {
-                if (e.currentTarget.value.length > 0) {
-                    e.currentTarget.parentNode.classList.add('entered-field');
-                } else {
-                    e.currentTarget.parentNode.classList.remove('entered-field');
-                }
-            })
-        )
+    <p class="error-message" id="password-error-message" style="display: none">Пароли не совпадают</p>
 
-        registrationForm.addEventListener('submit', ((e) => {
-            e.preventDefault();
-            const userObj = {
-                Login: login.value,
-                Password: password.value,
-                RePassword: confPassword.value,
-                LastName: lastName.value,
-                FirstName: name.value
-            }
-            const data = JSON.stringify(userObj);
-            new Promise((res, rej) => {
-                const xhr = new XMLHttpRequest();
-                xhr.onreadystatechange = () => {
-                    if (xhr.readyState == 4 && xhr.status == 200) {
-                        if (JSON.parse(xhr.response) === 'ok') {
-                            res()
-                        }
-                        else {
-                            rej(JSON.parse(xhr.response))
-                        }
-                    }
-                }
+    <button type="submit">Зарегистрироваться</button>
+</form>
+<script src="scripts/script.js"></script>
+<script>
+	const name = document.getElementById('name');
+	const lastName = document.getElementById('lastName');
+	const login = document.getElementById('login');
+	const password = document.getElementById('password');
+	const confPassword = document.getElementById('confPassword');
+	const registrationForm = document.getElementById('registration');
+	const passwordErrorMessage = document.getElementById('password-error-message');
 
-                xhr.open('POST', '/api/user/reg')
-                xhr.send(data);
-            })
-                .then(() => {
-                    alert('Пользователь успешно создан');
-                    document.querySelectorAll('input').forEach(e => e.value = '');
-                    password.classList.remove('error');
-                    confPassword.classList.remove('error');
-                    passwordErrorMessage.style.display = 'none';
-                    getJwt(userObj.Login, userObj.Password)
-                        .then((jwt) => {
-                            localStorage.setItem('jwt', jwt);
-                            window.location.href = '/all_users_table'
-                        })
-                        .catch((errorJwt)=>{
-                            alert(errorJwt);
-                        })
-                })
-                .catch(error => {
-                    if (error === "Password not equals") {
-                        password.classList.add('error');
-                        confPassword.classList.add('error');
-                        passwordErrorMessage.style.display = 'block';
-                    }
-                    else {
-                        alert(error);
-                    }
-                })
-        }))
-    </script>
+	document.querySelectorAll('input.sign-input').forEach(input =>
+		input.addEventListener('input', e => {
+			if (e.currentTarget.value.length > 0) {
+				e.currentTarget.parentNode.classList.add('entered-field');
+			} else {
+				e.currentTarget.parentNode.classList.remove('entered-field');
+			}
+		})
+	)
+
+	registrationForm.addEventListener('submit', ((e) => {
+		e.preventDefault();
+		let user = {
+			Login: login.value,
+			Password: password.value,
+			RePassword: confPassword.value,
+			LastName: lastName.value,
+			FirstName: name.value
+		};
+		new Promise((res, rej) => {
+			const xhr = new XMLHttpRequest();
+			xhr.open('POST', '/api/user/reg');
+			xhr.onreadystatechange = () => {
+				if (xhr.readyState === 4 && xhr.status === 200) {
+					let response = JSON.parse(xhr.response);
+					if (response === 'ok') {
+						res(user);
+					} else {
+						rej(response);
+					}
+				}
+			};
+			xhr.send(JSON.stringify(user));
+		})
+			.then(user => {
+				getJwt(user.Login, user.Password)
+					.then(jwt => {
+						localStorage.setItem('jwt', jwt);
+						window.location.href = '/all_users_table';
+					})
+					.catch((errorJwt) => alert(errorJwt));
+			})
+			.catch(error => {
+				if (error === "Password not equals") {
+					password.classList.add('error');
+					confPassword.classList.add('error');
+					passwordErrorMessage.style.display = 'block';
+				} else {
+					alert(error);
+				}
+			});
+	}));
+</script>
 
 </body>
 
