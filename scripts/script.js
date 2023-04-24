@@ -19,26 +19,14 @@ exit.addEventListener('click', (e) => {
 })
 
 function getJwt(login, password) {
-	
-
-	return new Promise((res, rej) => {
-		const xhr = new XMLHttpRequest();
-		xhr.open('POST', '/api/auth');
-		xhr.onreadystatechange = () => {
-			if (xhr.readyState === 4 && xhr.status === 200) {
-				const JwtObj = JSON.parse(xhr.response);
-				if (JwtObj.Error !== null) {
-					rej(JwtObj.Error);
-					return;
-				}
-				res(JwtObj.Jwt);
-			}
-		};
-		xhr.send(JSON.stringify({
+	return fetch('/api/auth', {
+		method: 'POST',
+		body: JSON.stringify({
 			Login: login,
 			Password: password,
-		}));
+		})
 	})
+		.then(data => data.json())
 }
 
 function checkJwt() {

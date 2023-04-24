@@ -2,132 +2,127 @@
 <html lang="en">
 
 <head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Registration</title>
-    <link rel="stylesheet" href="css/style.css">
+	<meta charset="UTF-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>Registration</title>
+	<link rel="stylesheet" href="css/style.css">
 </head>
 
 <body id="body">
-<header class="header">
-    <div class="wrapper-header">
-        <div id="info">
-            <div id="avatar">
-            </div>
-            <p class="user-info"></p>
-        </div>
-        <div id="navigation">
-            <a href="/index">
-                <div class="block user">Главная</div>
-            </a>
-            <a href="/my_friends">
-                <div class="block user">Мои Друзья</div>
-            </a>
-            <a href="/all_users_table">
-                <div class="block user">Таблица</div>
-            </a>
-            <a href="">
-                <div class="block active guest">Регистрация</div>
-            </a>
-            <a href="/sign_in">
-                <div class="block guest">Вход</div>
-            </a>
-            <div id="exit" class="block user">Выход</div>
-        </div>
-    </div>
-</header>
-<form autocomplete="off" id="registration">
+	<header class="header">
+		<div class="wrapper-header">
+			<div id="info">
+				<div id="avatar">
+				</div>
+				<p class="user-info"></p>
+			</div>
+			<div id="navigation">
+				<a href="/index">
+					<div class="block user">Главная</div>
+				</a>
+				<a href="/my_friends">
+					<div class="block user">Мои Друзья</div>
+				</a>
+				<a href="/all_users_table">
+					<div class="block user">Таблица</div>
+				</a>
+				<a href="">
+					<div class="block active guest">Регистрация</div>
+				</a>
+				<a href="/sign_in">
+					<div class="block guest">Вход</div>
+				</a>
+				<div id="exit" class="block user">Выход</div>
+			</div>
+		</div>
+	</header>
+	<form autocomplete="off" id="registration">
 
 
-    <div class="sign-form">
-        <input class="sign-input" type="text" id="name" placeholder="name">
-        <label for="name">Имя</label>
-    </div>
-    <div class="sign-form">
-        <input class="sign-input" type="text" id="lastName" placeholder="lastName">
-        <label for="lastName">Фамилия</label>
-    </div>
-    <div class="sign-form">
-        <input class="sign-input" type="text" id="login" placeholder="login">
-        <label for="login">Логин</label>
-    </div>
-    <div class="sign-form">
-        <input class="sign-input" type="password" id="password" placeholder="password">
-        <label for="password">Пароль</label>
-    </div>
-    <div class="sign-form">
-        <input class="sign-input" type="password" id="confPassword" placeholder="confPassword">
-        <label for="confPassword">Подтвердите пароль</label>
-    </div>
+		<div class="sign-form">
+			<input class="sign-input" type="text" id="name" placeholder="name">
+			<label for="name">Имя</label>
+		</div>
+		<div class="sign-form">
+			<input class="sign-input" type="text" id="lastName" placeholder="lastName">
+			<label for="lastName">Фамилия</label>
+		</div>
+		<div class="sign-form">
+			<input class="sign-input" type="text" id="login" placeholder="login">
+			<label for="login">Логин</label>
+		</div>
+		<div class="sign-form">
+			<input class="sign-input" type="password" id="password" placeholder="password">
+			<label for="password">Пароль</label>
+		</div>
+		<div class="sign-form">
+			<input class="sign-input" type="password" id="confPassword" placeholder="confPassword">
+			<label for="confPassword">Подтвердите пароль</label>
+		</div>
 
-    <p class="error-message" id="password-error-message" style="display: none">Пароли не совпадают</p>
+		<p class="error-message" id="password-error-message" style="display: none">Пароли не совпадают</p>
 
-    <button type="submit">Зарегистрироваться</button>
-</form>
-<script src="scripts/script.js"></script>
-<script>
-	const name = document.getElementById('name');
-	const lastName = document.getElementById('lastName');
-	const login = document.getElementById('login');
-	const password = document.getElementById('password');
-	const confPassword = document.getElementById('confPassword');
-	const registrationForm = document.getElementById('registration');
-	const passwordErrorMessage = document.getElementById('password-error-message');
+		<button type="submit">Зарегистрироваться</button>
+	</form>
+	<script src="scripts/script.js"></script>
+	<script>
+		const name = document.getElementById('name');
+		const lastName = document.getElementById('lastName');
+		const login = document.getElementById('login');
+		const password = document.getElementById('password');
+		const confPassword = document.getElementById('confPassword');
+		const registrationForm = document.getElementById('registration');
+		const passwordErrorMessage = document.getElementById('password-error-message');
 
-	document.querySelectorAll('input.sign-input').forEach(input =>
-		input.addEventListener('input', e => {
-			if (e.currentTarget.value.length > 0) {
-				e.currentTarget.parentNode.classList.add('entered-field');
-			} else {
-				e.currentTarget.parentNode.classList.remove('entered-field');
-			}
-		})
-	)
-
-	registrationForm.addEventListener('submit', ((e) => {
-		e.preventDefault();
-		const user = {
-			Login: login.value,
-			Password: password.value,
-			RePassword: confPassword.value,
-			LastName: lastName.value,
-			FirstName: name.value
-		};
-		new Promise((res, rej) => {
-			const xhr = new XMLHttpRequest();
-			xhr.open('POST', '/api/user/reg');
-			xhr.onreadystatechange = () => {
-				if (xhr.readyState === 4 && xhr.status === 200) {
-					const response = JSON.parse(xhr.response);
-					if (response === 'ok') {
-						res(user);
-					} else {
-						rej(response);
-					}
-				}
-			};
-			xhr.send(JSON.stringify(user));
-		})
-			.then(user => {
-				getJwt(user.Login, user.Password)
-					.then(jwt => {
-						localStorage.setItem('jwt', jwt);
-						window.location.href = '/all_users_table';
-					})
-					.catch((errorJwt) => alert(errorJwt));
-			})
-			.catch(error => {
-				if (error === "Password not equals") {
-					password.classList.add('error');
-					confPassword.classList.add('error');
-					passwordErrorMessage.style.display = 'block';
+		document.querySelectorAll('input.sign-input').forEach(input =>
+			input.addEventListener('input', e => {
+				if (e.currentTarget.value.length > 0) {
+					e.currentTarget.parentNode.classList.add('entered-field');
 				} else {
-					alert(error);
+					e.currentTarget.parentNode.classList.remove('entered-field');
 				}
-			});
-	}));
-</script>
+			})
+		)
+
+		registrationForm.addEventListener('submit', ((e) => {
+			e.preventDefault();
+			const user = {
+				Login: login.value,
+				Password: password.value,
+				RePassword: confPassword.value,
+				LastName: lastName.value,
+				FirstName: name.value
+			};
+			fetch('/api/user/reg', {
+				method: 'POST',
+				body: JSON.stringify(user)
+			})
+				.then(data => data.json())
+				.then(response => {
+					if (response === 'ok') {
+						getJwt(user.Login, user.Password)
+							.then((jwt) => {
+								if (jwt.Error != null) {
+									alert(jwt.Error)
+								}
+								else {
+									localStorage.setItem('jwt', jwt.Jwt);
+									window.location.href = '/all_users_table'
+								}
+							})
+					}
+					else if (response === "Password not equals") {
+						password.classList.add('error');
+						confPassword.classList.add('error');
+						passwordErrorMessage.style.display = 'block';
+					}
+					else {
+						alert(response);
+					}
+				})
+		}));
+	</script>
 
 </body>
 

@@ -86,11 +86,13 @@
             e.preventDefault();
             getJwt(loginInput.value, passwordInput.value)
                 .then((jwt) => {
-                    localStorage.setItem('jwt', jwt);
-                    window.location.href = '/all_users_table'
-                })
-                .catch((errorJwt) => {
-                    alert(errorJwt);
+                    if (jwt.Error != null) {
+                        alert(jwt.Error)
+                    }
+                    else {
+                        localStorage.setItem('jwt', jwt.Jwt);
+                        window.location.href = '/all_users_table'
+                    }
                 })
 
         }))
