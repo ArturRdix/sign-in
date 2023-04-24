@@ -10,32 +10,32 @@
 </head>
 
 <body id="body">
-        <header class="header">
-            <div class="wrapper-header">
-                <div id="info">
-                    <div id="avatar">
-                    </div>
-                    <p class="user-info"></p>
+    <header class="header">
+        <div class="wrapper-header">
+            <div id="info">
+                <div id="avatar">
                 </div>
-                <div id="navigation">
-                    <a href="/">
-                        <div class="block user">Главная</div>
-                    </a>
-                    <a href="/my_friends">
-                        <div class="block user">Мои Друзья</div>
-                    </a>
-                    <a href="/all_users_table">
-                        <div class="block user">Таблица</div>
-                    </a>
-                    <a href="/registration">
-                        <div class="block guest">Регистрация</div>
-                    </a>
-                    <div class="block guest active">Вход</div>
-                    <div id="exit" class="block user">Выход</div>
-                </div>
+                <p class="user-info"></p>
             </div>
-        </header>
-    
+            <div id="navigation">
+                <a href="/">
+                    <div class="block user">Главная</div>
+                </a>
+                <a href="/my_friends">
+                    <div class="block user">Мои Друзья</div>
+                </a>
+                <a href="/all_users_table">
+                    <div class="block user">Таблица</div>
+                </a>
+                <a href="/registration">
+                    <div class="block guest">Регистрация</div>
+                </a>
+                <div class="block guest active">Вход</div>
+                <div id="exit" class="block user">Выход</div>
+            </div>
+        </div>
+    </header>
+
     <form autocomplete="off" id="sign-in">
         <div class="sign-form">
             <input class="sign-input" type="text" id="login" placeholder="Email">
@@ -52,10 +52,10 @@
         <button type="submit">Авторизация</button>
         <p>У вас нет аккаунта? <a href="">Зарегестрироваться</a></p>
     </form>
-    
+
     <script src="scripts/script.js"></script>
     <script>
-        
+
         let checkPassword = document.getElementById('check-block');
         let checkBox = document.getElementById('check-box');
         let loginInput = document.getElementById('login');
@@ -84,7 +84,14 @@
 
         signInForm.addEventListener('submit', ((e) => {
             e.preventDefault();
-            getJwt(loginInput.value, passwordInput.value);
+            getJwt(loginInput.value, passwordInput.value)
+                .then((jwt) => {
+                    localStorage.setItem('jwt', jwt);
+                    window.location.href = '/all_users_table'
+                })
+                .catch((errorJwt) => {
+                    alert(errorJwt);
+                })
 
         }))
     </script>

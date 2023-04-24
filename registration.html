@@ -118,6 +118,13 @@
                     confPassword.classList.remove('error');
                     passwordErrorMessage.style.display = 'none';
                     getJwt(userObj.Login, userObj.Password)
+                        .then((jwt) => {
+                            localStorage.setItem('jwt', jwt);
+                            window.location.href = '/all_users_table'
+                        })
+                        .catch((errorJwt)=>{
+                            alert(errorJwt);
+                        })
                 })
                 .catch(error => {
                     if (error === "Password not equals") {
@@ -131,7 +138,7 @@
                 })
         }))
     </script>
-    
+
 </body>
 
 </html>

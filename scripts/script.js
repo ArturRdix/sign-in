@@ -12,35 +12,33 @@ exit.addEventListener('click', (e) => {
     window.location.href = '/sign_in';
 })
 function getJwt(login, password) {
-    const userObj = {
-        Login: login,
-        Password: password
-    }
-    const dataUser = JSON.stringify(userObj);
-    const xhr = new XMLHttpRequest();
-    xhr.onreadystatechange = () => {
-        if (xhr.readyState === 4 && xhr.status === 200) {
-            const JwtObj = JSON.parse(xhr.response);
-            if (JwtObj.Error !== null) {
-                alert(JwtObj.Error)
-                return;
-            }
-            localStorage.setItem('jwt', JwtObj.Jwt);
-            window.location.href = '/all_users_table'
+    return new Promise((res,rej)=>{
+        const userObj = {
+            Login: login,
+            Password: password
         }
-    }
-    xhr.open('POST', '/api/auth');
-    xhr.send(dataUser);
+        const dataUser = JSON.stringify(userObj);
+        const xhr = new XMLHttpRequest();
+        xhr.onreadystatechange = () => {
+            if (xhr.readyState === 4 && xhr.status === 200) {
+                const JwtObj = JSON.parse(xhr.response);
+                if (JwtObj.Error !== null) {
+                    rej(JwtObj.Error)
+                    return;
+                }
+                res(JwtObj.Jwt)
+            }
+        }
+        xhr.open('POST', '/api/auth');
+        xhr.send(dataUser);
+    })
 }
 function checkJwt() {
-    const jwt = localStorage.getItem('jwt');
-    const xhr = new XMLHttpRequest();
-    const JwtObj = {
-        Jwt: jwt
-    }
-
     return new Promise((res, rej) => {
-        const dataJwt = JSON.stringify(JwtObj);
+        const xhr = new XMLHttpRequest();
+        const dataJwt = JSON.stringify({
+            Jwt: localStorage.getItem('jwt')
+        });
         xhr.onreadystatechange = () => {
             if (xhr.readyState === 4 && xhr.status === 200) {
                 const userObj = JSON.parse(xhr.response);
