@@ -12,7 +12,7 @@ exit.addEventListener('click', (e) => {
     window.location.href = '/sign_in';
 })
 function getJwt(login, password) {
-    return new Promise((res,rej)=>{
+    return new Promise((res, rej) => {
         const userObj = {
             Login: login,
             Password: password
@@ -68,19 +68,20 @@ function noAuthorizeUser(userObj) {
     }
 }
 function getUser(id) {
-
     return new Promise((res, rej) => {
         const xhr = new XMLHttpRequest();
         xhr.onreadystatechange = function () {
-            if (this.readyState == 4 && this.status == 200) {
-                let userObj = JSON.parse(xhr.response);
-                res(userObj);
-            }
-            else {
-                rej(id);
+            if (this.readyState == 4) {
+                if (this.status == 200) {
+                    let userObj = JSON.parse(xhr.response);
+                    res(userObj);
+                }
+                else {
+                    rej(id);
+                }
             }
         }
-        xhr.open('GET', `/api/user/one?id=${id}`); 
+        xhr.open('GET', `/api/user/one?id=${id}`);
         xhr.setRequestHeader('Authorization', `Bearer ${localStorage.getItem('jwt')}`);
         xhr.send();
 
@@ -90,6 +91,6 @@ function getUser(id) {
         console.log(`Фамилия пользователя: ${user.LastName}`)
         console.log(`Логин пользователя: ${user.Login}`)
     })
-        .catch((id) => console.log(`Пользователь с id:${id} - не найден`))
+        .catch((id) => console.error(id))
 }
 
