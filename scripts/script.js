@@ -1,5 +1,5 @@
-let guestElems = document.querySelectorAll('.guest');
-let userElems = document.querySelectorAll('.user');
+const guestElems = document.querySelectorAll('.guest');
+const userElems = document.querySelectorAll('.user');
 const exit = document.getElementById('exit');
 const infoText = document.querySelectorAll('.user-info');
 
@@ -76,7 +76,7 @@ function getUser(id) {
 		xhr.setRequestHeader('Authorization', `Bearer ${localStorage.getItem('jwt')}`);
 		xhr.onreadystatechange = function () {
 			if (this.readyState === 4) {
-				let user = JSON.parse(xhr.response);
+				const user = JSON.parse(xhr.response);
 				if (this.status === 200 && user != null) {
 					res(user);
 				} else {

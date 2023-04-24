@@ -87,7 +87,7 @@
 
 	registrationForm.addEventListener('submit', ((e) => {
 		e.preventDefault();
-		let user = {
+		const user = {
 			Login: login.value,
 			Password: password.value,
 			RePassword: confPassword.value,
@@ -99,7 +99,7 @@
 			xhr.open('POST', '/api/user/reg');
 			xhr.onreadystatechange = () => {
 				if (xhr.readyState === 4 && xhr.status === 200) {
-					let response = JSON.parse(xhr.response);
+					const response = JSON.parse(xhr.response);
 					if (response === 'ok') {
 						res(user);
 					} else {
