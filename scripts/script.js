@@ -2,6 +2,7 @@ let guestElems = document.querySelectorAll('.guest');
 let userElems = document.querySelectorAll('.user');
 const exit = document.getElementById('exit');
 const infoText = document.querySelectorAll('.user-info');
+
 checkJwt()
     .then(user => authorizeUser(user))
     .catch(user => noAuthorizeUser(user))
@@ -68,3 +69,29 @@ function noAuthorizeUser(userObj) {
         window.location.href = '/sign_in';
     }
 }
+function getUser(id) {
+
+    return new Promise((res, rej) => {
+        const xhr = new XMLHttpRequest();
+        xhr.onreadystatechange = function () {
+            if (this.readyState == 4 && this.status == 200) {
+                let userObj = JSON.parse(xhr.response);
+                res(userObj);
+            }
+            else {
+                rej(id);
+            }
+        }
+        xhr.open('GET', `/api/user/one?id=${id}`); 
+        xhr.setRequestHeader('Authorization', `Bearer ${localStorage.getItem('jwt')}`);
+        xhr.send();
+
+    }).then((user) => {
+        console.log(`Id пользователя: ${user.Id}`)
+        console.log(`Имя пользователя: ${user.FirstName}`)
+        console.log(`Фамилия пользователя: ${user.LastName}`)
+        console.log(`Логин пользователя: ${user.Login}`)
+    })
+        .catch((id) => console.log(`Пользователь с id:${id} - не найден`))
+}
+

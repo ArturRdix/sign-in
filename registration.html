@@ -129,24 +129,9 @@
                         alert(error);
                     }
                 })
-
         }))
-        function getUser(id) {
-            const xhr = new XMLHttpRequest();
-            xhr.open('GET', `/api/user/one?id=${id}`);
-            xhr.onreadystatechange = function () {
-                if (this.readyState == 4 && this.status == 200) {
-                    let userObj = JSON.parse(xhr.response);
-
-                    console.log(`Id пользователя: ${userObj.Id}`)
-                    console.log(`Имя пользователя: ${userObj.FirstName}`)
-                    console.log(`Фамилия пользователя: ${userObj.LastName}`)
-                    console.log(`Логин пользователя: ${userObj.Login}`)
-                }
-            }
-            xhr.send();
-        }
     </script>
+    
 </body>
 
 </html>

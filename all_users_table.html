@@ -51,35 +51,45 @@
         }
 
         getUsers()
+            .then(users => {
+                const table = document.querySelector('table');
+                users.forEach(user => {
+                    const tr = document.createElement('tr');
+                    const idTd = document.createElement('td');
+                    idTd.innerText = user.Id;
+                    tr.appendChild(idTd);
+                    const firstNameTd = document.createElement('td');
+                    firstNameTd.innerText = user.FirstName;
+                    tr.appendChild(firstNameTd);
+                    const lastNameTd = document.createElement('td');
+                    lastNameTd.innerText = user.LastName;
+                    tr.appendChild(lastNameTd);
+                    const loginTd = document.createElement('td');
+                    loginTd.innerText = user.Login;
+                    tr.appendChild(loginTd);
+                    table.appendChild(tr);
+                });
+            })
+            .catch(error => {
+                console.log(`Error ${error}`);
+            });
 
-        
         function getUsers() {
             const xhr = new XMLHttpRequest();
-            xhr.open('GET', `/api/user/all`);
-            xhr.setRequestHeader('Authorization', `Bearer ${localStorage.getItem('jwt')}`)
-            xhr.onreadystatechange = function () {
-                if (this.readyState == 4 && this.status == 200) {
-                    const usersArr = JSON.parse(xhr.response);
-                    for (let i = 0; i < usersArr.length; i++) {
-                        let tr = document.createElement('tr');
-                        let td = document.createElement('td');
-                        document.querySelector('table').appendChild(tr);
-                        td = document.createElement('td');
-                        td.innerText = `${usersArr[i].Id}`
-                        tr.appendChild(td)
-                        td = document.createElement('td');
-                        td.innerText = `${usersArr[i].FirstName}`
-                        tr.appendChild(td)
-                        td = document.createElement('td');
-                        td.innerText = `${usersArr[i].LastName}`
-                        tr.appendChild(td)
-                        td = document.createElement('td');
-                        td.innerText = `${usersArr[i].Login}`
-                        tr.appendChild(td)
+            return new Promise((res, rej) => {
+                xhr.onreadystatechange = function () {
+                    if (this.readyState == 4) {
+                        if (this.status == 200) {
+                            res(JSON.parse(xhr.response));
+                        } else {
+                            rej(JSON.parse(xhr.response));
+                        }
                     }
-                }
-            }
-            xhr.send();
+                };
+                xhr.open('GET', '/api/user/all');
+                xhr.setRequestHeader('Authorization', `Bearer ${localStorage.getItem('jwt')}`);
+                xhr.send();
+            });
         }
     </script>
 </body>
