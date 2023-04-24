@@ -4,8 +4,14 @@ const exit = document.getElementById('exit');
 const infoText = document.querySelectorAll('.user-info');
 
 checkJwt()
-	.then(user => authorizeUser(user))
-	.catch(() => noAuthorizeUser())
+	.then((user) => {
+		if (user == null) {
+			noAuthorizeUser()
+		}
+		else {
+			authorizeUser(user)
+		}
+	})
 
 exit.addEventListener('click', (e) => {
 	localStorage.removeItem('jwt');
@@ -13,6 +19,8 @@ exit.addEventListener('click', (e) => {
 })
 
 function getJwt(login, password) {
+	
+
 	return new Promise((res, rej) => {
 		const xhr = new XMLHttpRequest();
 		xhr.open('POST', '/api/auth');
@@ -34,24 +42,14 @@ function getJwt(login, password) {
 }
 
 function checkJwt() {
-	return new Promise((res, rej) => {
-		const xhr = new XMLHttpRequest();
-		xhr.open('POST', '/api/auth/user');
-		xhr.onreadystatechange = () => {
-			if (xhr.readyState === 4 && xhr.status === 200) {
-				const userObj = JSON.parse(xhr.response);
-				if (userObj == null) {
-					rej();
-				} else {
-					res(userObj);
-				}
-			}
-		};
-		xhr.send(JSON.stringify({
-			Jwt: localStorage.getItem('jwt')
-		}));
-	})
-
+	return fetch('/api/auth/user',
+		{
+			method: 'POST',
+			body: JSON.stringify({
+				Jwt: localStorage.getItem('jwt')
+			})
+		})
+		.then((data) => data.json())
 }
 
 function authorizeUser(UserObj) {
